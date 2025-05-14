@@ -1,0 +1,49 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# Simulated historical energy usage data (in kWh)
+# Features: [Temperature, Hour of Day, Day of Week (0=Mon...6=Sun)]
+X = np.array([
+    [30, 10, 1], [25, 10, 1], [20, 18, 2],
+    [22, 14, 3], [27, 16, 4], [23, 20, 5],
+    [21, 9, 6], [28, 14, 0], [24, 11, 1]
+])
+# Corresponding energy usage (target values)
+y = np.array([120, 90, 85, 95, 110, 100, 85, 115, 92])
+
+# Train the simple predictive model
+model = LinearRegression()
+model.fit(X, y)
+
+# Simulated new data for prediction (real-time input)
+new_data = np.array([
+    [29, 14, 0], [26, 11, 1], [21, 19, 2]
+])
+
+# Predict energy consumption
+predicted_usage = model.predict(new_data)
+
+# Apply optimization (reduce predicted usage by estimated 15%)
+optimized_usage = predicted_usage * 0.85
+
+# Bar Graph: Before and After Optimization
+labels = ['Scenario 1', 'Scenario 2', 'Scenario 3']
+x = np.arange(len(labels))
+width = 0.35
+
+fig, ax = plt.subplots()
+bars1 = ax.bar(x - width/2, predicted_usage, width, label='Predicted Usage (kWh)', color='skyblue')
+bars2 = ax.bar(x + width/2, optimized_usage, width, label='Optimized Usage (kWh)', color='lightgreen')
+
+# Labeling
+ax.set_xlabel('Test Scenarios')
+ax.set_ylabel('Energy Usage (kWh)')
+ax.set_title('Energy Consumption: Predicted vs Optimized')
+ax.set_xticks(x)
+ax.set_xticklabels(labels)
+ax.legend()
+
+# Display graph
+plt.tight_layout()
+plt.show()
